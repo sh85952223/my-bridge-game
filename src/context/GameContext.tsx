@@ -1,6 +1,6 @@
-import { createContext, useState, useContext, type ReactNode } from 'react';
+import React, { createContext, useState, useContext, ReactNode } from 'react';
 import { db } from '../firebaseConfig';
-import { serverTimestamp, doc, updateDoc, setDoc } from 'firebase/firestore';
+import { serverTimestamp, doc, updateDoc, setDoc } from 'firebase/firestore'; // addDoc, collection 제거
 
 // --- Type 정의 ---
 // ... (기존 코드) ...
@@ -53,12 +53,11 @@ export const GameProvider = ({ children }: GameProviderProps) => {
    */
   const startGame = async (p1Id: string, p1Name: string, p2Id: string, p2Name: string) => {
     try {
-      // 2. [1번 요청] 'addDoc' 대신 'setDoc'을 사용합니다.
-      // 'gameSessions' 컬렉션에 'p1Id'(학번)를 문서 ID로 지정합니다.
-      const gameDocRef = doc(db, "gameSessions", p1Id);
-
-      // 3. setDoc으로 데이터를 저장합니다.
-      await setDoc(gameDocRef, {
+      // 1. 학번(p1Id)을 문서 ID로 사용
+      const gameDocRef = doc(db, "gameSessions", p1Id); 
+      
+      // 2. setDoc (addDoc 대신)으로 문서 생성
+      await setDoc(gameDocRef, { 
         player1Id: p1Id,
         player1Name: p1Name,
         player2Id: p2Id || null,
@@ -73,14 +72,13 @@ export const GameProvider = ({ children }: GameProviderProps) => {
       setGameDocId(p1Id); // 문서 ID를 랜덤 ID가 아닌 p1Id로 저장
       setCurrentPage(1); // 1번 페이지(게임 시작)로 이동
 
-      console.log("게임 시작! Firebase 문서 ID:", p1Id); // p1Id(학번)가 표시됩니다.
+      console.log("게임 시작! Firebase 문서 ID:", p1Id);
 
     } catch (e) {
       console.error("Firebase 문서 생성 오류: ", e);
-      // 'alert' 대신 console.error를 사용합니다. (alert는 이전 단계에서 제거)
-      // throw e; // LoginScreen에서 catch 할 수 있도록 오류를 다시 던집니다.
-      // 'alert'를 사용하기로 했었네요. 다시 추가합니다.
-      alert("게임 시작에 실패했습니다. 인터넷 연결을 확인하거나 관리자에게 문의하세요.\n(Firestore 쓰기 권한을 확인하세요)");
+      alert("게임 시작에 실패했습니다. 관리자에게 문의하세요.");
+      // [수정!] 에러를 다시 throw하여 LoginScreen.tsx가 알 수 있게 함
+      throw e; 
     }
   };
 
@@ -120,5 +118,6 @@ export const GameProvider = ({ children }: GameProviderProps) => {
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
 };
+
 
 
