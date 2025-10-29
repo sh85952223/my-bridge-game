@@ -1,30 +1,26 @@
 /* src/components/pages/PageStyles_v2.css */
 /* Page 10부터 적용되는 '버전 2' 스타일 */
+/* Page 1~9 (PageStyles.css)의 스타일에 영향을 주지 않습니다. */
 
-/* .page-container의 기본 스타일을 덮어씁니다 */
+/* --- Page 10 (Amazing Bridges) --- */
 .page10-container {
   justify-content: space-between;
-  text-align: center; /* 버튼 중앙 정렬 */
-  padding: 1.5rem; /* 모바일 패딩 */
+  text-align: center;
+  padding: 1.5rem;
 }
-
-/* PC/태블릿에서는 패딩을 더 넉넉하게 */
 @media (min-width: 500px) {
   .page10-container {
     padding: 2.5rem;
   }
 }
-
 .image-card {
   position: relative;
   width: 100%;
   height: 400px;
   border-radius: 12px;
   overflow: hidden;
-  /* .gif 확장자를 사용합니다.
-    public/assets/images/bridge_winding_loop.gif 
-  */
-  background-image: url('/assets/images/bridge_winding_loop.gif'); 
+  /* .gif 확장자를 사용합니다. */
+  background-image: url('/assets/images/bridge_winding_loop.gif');
   background-size: cover;
   background-position: center;
   display: flex;
@@ -32,8 +28,6 @@
   justify-content: flex-end; /* 텍스트를 하단에 배치 */
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
-
-/* 이미지 위에 어두운 그라데이션 오버레이 */
 .image-card::before {
   content: '';
   position: absolute;
@@ -41,12 +35,11 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(180deg, 
-    rgba(0,0,0,0.0) 40%, 
+  background: linear-gradient(180deg,
+    rgba(0,0,0,0.0) 40%,
     rgba(0,0,0,0.7) 100%);
   z-index: 1;
 }
-
 .image-card-content {
   position: relative;
   z-index: 2;
@@ -54,13 +47,11 @@
   padding: 1.5rem;
   text-align: left;
 }
-
 .image-card-content h2 {
   font-size: 2rem;
   margin: 0;
   line-height: 1;
 }
-
 .image-card-content h1 {
   font-size: 2.5rem;
   font-weight: 700;
@@ -68,8 +59,6 @@
   margin: 0.5rem 0 0 0;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
-
-/* 카드 하단 텍스트 */
 .page10-subtext {
   font-size: 1.25rem;
   color: #e0e0e0;
@@ -77,35 +66,25 @@
   margin: 2rem 0; /* 위아래 여백 추가 */
   text-align: center;
 }
-
-/* Page 10의 '다음' 버튼은 PageStyles.css의 .next-button-styled를
-  공유하므로, 여기에는 버튼 스타일이 없어도 됩니다.
-  단, margin-top: auto가 아닌 기본값(0)을 갖도록
-  .page10-container가 제어합니다.
-*/
+/* Page 10의 '다음' 버튼은 PageStyles.css의 .next-button-styled를 공유 */
 .page10-container .next-button-styled {
   margin-top: 0;
 }
 
-
-/* --- [NEW] Page 11 (Definition Flip Card) --- */
+/* --- Page 11 (Definition Flip Card) --- */
 .page11-container {
   justify-content: center; /* 수직, 수평 중앙 정렬 */
   align-items: center;
   gap: 2rem; /* 카드와 버튼 사이 간격 */
 }
-
-/* 3D 플립 효과를 위한 래퍼 */
 .flip-card {
   background-color: transparent;
   width: 100%;
-  max-width: 340px; /* 카드의 최대 너비 */
+  max-width: 340px;
   height: 400px;
   perspective: 1000px; /* 3D 효과를 위한 원근감 */
   cursor: pointer;
 }
-
-/* 플립 효과의 핵심 */
 .flip-card-inner {
   position: relative;
   width: 100%;
@@ -115,26 +94,18 @@
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
   border-radius: 12px;
 }
-
-/* 카드가 뒤집혔을 때 */
 .flip-card.flipped .flip-card-inner {
   transform: rotateY(180deg);
 }
-
-/* 카드 앞면 (질문) */
 .flip-card-front {
   background-color: #3a3a3a; /* 어두운 카드 배경 */
   color: white;
 }
-
-/* 카드 뒷면 (정답) */
 .flip-card-back {
   background-color: #f7e04f; /* 포인트 컬러 배경 */
   color: #1e1e1e; /* 어두운 글씨 */
   transform: rotateY(180deg);
 }
-
-/* 카드 앞/뒷면 공통 스타일 */
 .flip-card-front,
 .flip-card-back {
   position: absolute;
@@ -143,8 +114,6 @@
   -webkit-backface-visibility: hidden; /* Safari */
   backface-visibility: hidden;
   border-radius: 12px;
-  
-  /* 텍스트 정렬 */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -153,26 +122,22 @@
   padding: 1.5rem;
   box-sizing: border-box;
 }
-
 .flip-card-front h2 {
   font-size: 2.2rem;
   font-weight: 700;
   margin: 0 0 0.5rem 0;
   line-height: 1.4;
 }
-
 .flip-card-front small {
   font-size: 1rem;
   color: #aaa;
 }
-
 .flip-card-back h2 {
   font-size: 1.8rem;
   font-weight: 700;
   margin: 0;
   line-height: 1.5;
 }
-
 .flip-card-back .definition-note {
   font-size: 0.9rem;
   font-weight: 600;
@@ -181,17 +146,283 @@
   border-radius: 20px;
   margin-top: 1.5rem;
 }
-
-/* 뒤집힌 후 나타나는 '다음' 버튼은 PageStyles.css의 .next-button-styled를 공유함 */
 .page11-container .next-button-styled {
-  margin-top: 0; /* page-container의 gap이 간격을 제어 */
+  margin-top: 0;
   opacity: 0;
   animation: fadeIn 0.5s 0.5s forwards; /* 0.5초 딜레이 후 페이드인 */
 }
-
-/* 페이드인 애니메이션 */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+/* --- Page 12 (Quiz Intro) --- */
+.page12-container {
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+.quiz-intro-content {
+  margin-top: 10rem;
+}
+.quiz-intro-title {
+  font-size: 4rem;
+  font-weight: 700;
+  color: #f7e04f; /* 라임색 */
+  margin: 0;
+}
+.quiz-intro-subtitle {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin: 1rem 0 0 0;
+}
+.nav-button-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: auto; /* 하단에 배치 */
+}
+.nav-button-container.top {
+  margin-top: 0;
+  margin-bottom: auto; /* 상단에 배치 */
+  padding: 0; /* .page-container의 패딩 사용 */
+}
+.nav-button {
+  background-color: #3a3a3a; /* 어두운 버튼 */
+  color: #f0f0f0;
+  border: 1px solid #555;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 100px;
+}
+.nav-button.prev-button {
+  margin-right: auto;
+}
+.nav-button.next-button {
+  margin-left: auto;
+}
+.nav-button:hover {
+  background-color: #4a4a4a;
+}
+
+/* --- [수정] Page 13 (Structure Quiz) --- */
+.page13-quiz {
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem; /* [수정] 요소 간 간격을 조금 더 줌 */
+}
+.quiz-instruction-text {
+  font-size: 1.1rem;
+  margin-top: 0;
+  text-align: center;
+  color: #ccc;
+  line-height: 1.5; /* 줄 간격 추가 */
+  margin-bottom: 1rem; /* [수정] 이미지와의 간격 조정 */
+}
+.quiz-diagram-container {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+.quiz-diagram-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+/* [삭제] .hotspot 관련 스타일 모두 삭제 */
+
+/* [신규] 퀴즈 번호 버튼 행 */
+.quiz-button-row {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem; /* 버튼 사이 간격 */
+  width: 100%;
+  margin: 1rem 0; /* 위아래 여백 */
+}
+/* [신규] 퀴즈 번호 버튼 */
+.quiz-number-button {
+  background-color: #3a3a3a;
+  border: 2px solid #555;
+  color: #f0f0f0;
+  border-radius: 8px;
+  padding: 0.75rem 0; /* 상하 패딩 */
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 50px; /* 버튼 너비 고정 */
+  height: 50px; /* 버튼 높이 고정 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.quiz-number-button:hover:not(:disabled) {
+  background-color: #4a4a4a;
+  border-color: #777;
+}
+.quiz-number-button:active:not(:disabled) {
+  transform: scale(0.95);
+}
+/* 맞힌 버튼 스타일 */
+.quiz-number-button.solved {
+  background-color: #28a745; /* 초록색 */
+  border-color: #a6ff00;
+  color: white;
+  cursor: default;
+}
+.quiz-number-button:disabled {
+  opacity: 0.8; /* 비활성화 시 약간 투명하게 */
+}
+
+.quiz-actions-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 1rem;
+  margin-top: 1rem; /* [수정] 이전 버전 값 복원 */
+}
+.hint-button-main {
+  background-color: #3a3a3a;
+  color: #f7e04f; /* 라임색 텍스트 */
+  border: 1px solid #555;
+  border-radius: 8px;
+  padding: 14px 20px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 1; /* 1:1 비율 */
+}
+.hint-button-main:hover {
+  background-color: #4a4a4a;
+}
+/* Page 13의 다음 버튼은 PageStyles.css의 공용 버튼 사용 */
+.page13-quiz .next-button-styled {
+  flex: 1; /* 1:1 비율 */
+  margin: 0;
+}
+.page13-quiz .next-button-styled:disabled {
+  background-color: #555;
+  color: #888;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* --- 퀴즈 모달 (Page 13, 14 공용) --- */
+.quiz-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+}
+.quiz-modal-content {
+  background-color: #3a3a3a;
+  color: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  text-align: center;
+  width: 90%;
+  max-width: 350px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  border: 1px solid #555;
+}
+.quiz-modal-content h2 {
+  color: #f7e04f;
+  margin-top: 0;
+  font-size: 1.5rem;
+}
+.quiz-modal-content p {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+/* .quiz-form은 PageStyles.css의 공용 스타일 사용 */
+.quiz-modal-content .quiz-form {
+  margin-top: 0;
+}
+.modal-close-button {
+  background-color: #555;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: 100%;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.modal-close-button:hover {
+  background-color: #777;
+}
+
+/* --- Page 14 (Hint Hub) --- */
+.page14-hint-hub {
+  justify-content: flex-start;
+  align-items: center;
+}
+.hint-hub-title {
+  color: #f7e04f;
+  font-size: 2rem;
+  margin-top: 1rem;
+  text-align: center;
+}
+.hint-hub-subtitle {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #ccc;
+}
+.hint-button-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* 모바일에서는 1줄 */
+  gap: 1rem;
+  width: 100%;
+  max-width: 350px;
+}
+@media (min-width: 500px) {
+  .hint-button-grid {
+    grid-template-columns: repeat(2, 1fr); /* PC에서는 2줄 */
+  }
+}
+.hint-button {
+  background-color: #3a3a3a;
+  color: #f0f0f0;
+  border: 1px solid #555;
+  border-radius: 8px;
+  padding: 1.25rem 1rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+.hint-button:hover {
+  background-color: #4a4a4a;
+  border-color: #777;
+}
+.hint-modal-content {
+  text-align: left;
+}
+.hint-modal-content h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.hint-modal-text {
+  line-height: 1.6;
+  white-space: pre-wrap; /* \n (줄바꿈)을 적용함 */
+  font-size: 1rem;
 }
 
