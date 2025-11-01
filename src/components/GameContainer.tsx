@@ -12,17 +12,15 @@ import Page8_ImageQuiz1 from './pages/Page8_ImageQuiz1';
 import Page9_VSQuiz from './pages/Page9_VSQuiz';
 import Page10_AmazingBridges from './pages/Page10_AmazingBridges';
 import Page11_Definition from './pages/Page11_Definition';
-// [신규] 퀴즈 섹션 3페이지 import
 import Page12_QuizIntro from './pages/Page12_QuizIntro';
 import Page13_StructureQuiz from './pages/Page13_StructureQuiz';
 import Page14_HintHub from './pages/Page14_HintHub';
+import Page15_DragQuiz from './pages/Page15_DragQuiz'; 
+// Page16_DiagramReference는 삭제됨
 
 const GameContainer = () => {
-  // 1. 훅 호출을 컴포넌트 최상단에서 실행합니다.
   const { currentPage, score } = useGame();
 
-  // 2. 점수 바 렌더링 함수
-  // (이 함수는 'score' 변수에 접근해야 하므로 GameContainer 내부에 있어야 합니다.)
   const renderScoreBar = () => (
     <div className="score-bar">
       <span className="score-label">SCORE</span>
@@ -30,10 +28,6 @@ const GameContainer = () => {
     </div>
   );
 
-  /**
-   * 3. 현재 페이지 번호에 맞는 컴포넌트를 반환합니다.
-   * (이 함수는 'currentPage' 변수에 접근해야 하므로 GameContainer 내부에 있어야 합니다.)
-   */
   const renderCurrentPage = () => {
     switch (currentPage) {
       case 1:
@@ -58,23 +52,22 @@ const GameContainer = () => {
         return <Page10_AmazingBridges />;
       case 11:
         return <Page11_Definition />;
-      
-      // [신규] 퀴즈 섹션 3페이지 추가
       case 12:
         return <Page12_QuizIntro />;
       case 13:
         return <Page13_StructureQuiz />;
       case 14:
         return <Page14_HintHub />;
+      case 15:
+        return <Page15_DragQuiz />;
+      // case 16은 삭제됨
 
       default:
-        // 혹시 모를 예외 처리 (1페이지로 이동)
         console.warn(`알 수 없는 페이지 번호입니다: ${currentPage}`);
         return <Page1_Title />;
     }
   };
 
-  // 4. 최종 JSX를 반환합니다.
   return (
     <div className="game-wrapper">
       {renderScoreBar()}

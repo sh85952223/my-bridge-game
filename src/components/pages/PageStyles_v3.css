@@ -1,0 +1,215 @@
+/* src/components/pages/PageStyles_v3.css */
+/* Page 15부터 적용되는 '버전 3' 스타일 */
+
+/* --- Page 15 (Click Match Quiz) --- */
+.page15-match-quiz-styled { 
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.5rem; 
+  padding: 1rem; 
+}
+@media (min-width: 500px) {
+  .page15-match-quiz-styled {
+    padding: 2rem; 
+  }
+}
+
+.match-quiz-title { 
+  color: #f7e04f;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-top: 0;
+  text-align: center;
+  letter-spacing: -0.05em; 
+}
+
+.match-quiz-subtitle { 
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  color: #ccc;
+  line-height: 1.4;
+}
+
+/* 퀴즈 영역을 좌우로 나눔 - Grid 시스템 활용 */
+.match-quiz-grid-container { 
+  display: grid;
+  grid-template-columns: 40% 1fr; /* 40% : 60% 비율 */
+  gap: 1rem; 
+  width: 100%;
+  margin-top: 1rem;
+  flex-grow: 1; /* 남은 공간을 꽉 채움 */
+}
+
+/* 용어 뱅크 (왼쪽) - Grid */
+.term-bank-grid { 
+  display: grid;
+  grid-template-rows: repeat(5, 1fr); /* 5개 행 고정 */
+  gap: 0.8rem; 
+}
+
+/* 용어 아이템 - Grid */
+.term-item-grid { 
+  background-color: #3a3a3a;
+  border: 2px solid #555;
+  color: #f0f0f0;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
+}
+.term-item-grid:hover:not(.matched) {
+  background-color: #4a4a4a;
+  border-color: #777;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* [수정] 2번 요청 (선택 강조) */
+.term-item-grid.selected {
+  background-color: #f7e04f; /* 라임색 배경 */
+  color: #1e1e1e; /* 어두운 글씨 */
+  border-color: #f7e04f; /* 라임색 테두리 */
+  transform: scale(1.02); 
+  box-shadow: 0 0 15px rgba(247, 224, 79, 0.4); 
+}
+
+/* 설명 목록 (오른쪽) - Grid */
+.description-list-grid { 
+  display: grid;
+  grid-template-rows: repeat(5, 1fr); /* 5개 행 고정 */
+  gap: 0.8rem; 
+}
+
+/* 설명 아이템 - Grid */
+.description-item-grid { 
+  background-color: #3a3a3a;
+  border: 2px solid #555;
+  color: #e0e0e0;
+  border-radius: 8px;
+  padding: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+.description-item-grid:hover:not(.matched) {
+  background-color: #4a4a4a;
+  border-color: #777;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* 피드백 메시지 스타일 */
+.feedback-message {
+  min-height: 30px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
+}
+.feedback-message .correct {
+  color: #a6ff00; /* 밝은 라임색 */
+  font-weight: 700;
+}
+.feedback-message .wrong {
+  color: #ff8a80; /* 밝은 빨간색 */
+  font-weight: 700;
+}
+/* [수정] 3번 요청 (안내 메시지) */
+.feedback-message .info {
+  color: #aaa; /* 회색 텍스트 */
+  font-weight: 500;
+}
+
+
+/* 정답 맞힘 (사라지는 애니메이션) */
+.term-item-grid.matched, 
+.description-item-grid.matched { 
+  animation: fadeOutMatched 0.8s forwards ease-out;
+  cursor: default;
+}
+@keyframes fadeOutMatched {
+  0% {
+    opacity: 1;
+    background-color: #28a745; /* 정답 초록색 */
+    border-color: #a6ff00;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.9);
+    height: 0; 
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    border-width: 0;
+    pointer-events: none; 
+  }
+}
+
+/* 오답 (흔들리는 애니메이션) */
+.term-item-grid.wrong, 
+.description-item-grid.wrong { 
+  animation: shakeWrong 0.5s ease;
+  border-color: #ff8a80; /* 밝은 빨간색 */
+  background-color: #6a2a2a; 
+}
+@keyframes shakeWrong {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
+}
+
+/* [수정] 4번 요청 (하단 버튼) */
+.quiz-actions-container {
+  display: flex;
+  flex-direction: column; 
+  align-items: center; /* '다음' 버튼 하나만 중앙 정렬 */
+  gap: 1rem; 
+  width: 100%;
+  margin-top: 2rem; 
+}
+/* [신규] 4번 요청 (버튼 하나만 있을 때) */
+.quiz-actions-container.single-button {
+  margin-top: auto; /* 페이지 하단으로 밀기 */
+  padding-top: 1rem; /* 상단 여백 */
+}
+.quiz-actions-container.single-button .next-button-styled {
+  width: 100%;
+  max-width: 300px; /* 버튼 최대 너비 */
+  margin: 0;
+}
+
+/* [삭제] 4번 요청 ('그림 확인' 버튼) */
+/* .hint-button-main { ... } */
+/* .hint-button-main:hover { ... } */
+
+/* .next-button-styled 는 PageStyles.css의 공용 스타일을 사용 */
+/* 이 파일에서 .next-button-styled 관련 스타일은 삭제해도 됩니다. */
+
+
+/* --- [삭제] 4번 요청 (Page 16) --- */
+/* .page16-reference { ... } */
+/* .reference-title { ... } */
+/* .reference-list { ... } */
+/* ... (Page 16 관련 모든 스타일 삭제) ... */
+

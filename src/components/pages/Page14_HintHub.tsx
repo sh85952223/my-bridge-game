@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useGame } from '../../context/GameContext';
+// [수정] useGame 임포트
+import { useGame } from '../../context/GameContext'; 
 import './PageStyles.css';      // 공용 스타일
 import './PageStyles_v2.css';   // 퀴즈 전용 스타일
 
@@ -13,12 +14,16 @@ const hintData = [
 ];
 
 const Page14_HintHub = () => {
-  const { setCurrentPage } = useGame();
+  // [수정] viewHint 함수 가져오기
+  const { setCurrentPage, viewHint } = useGame(); 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentHint, setCurrentHint] = useState(hintData[0]);
 
-  // 힌트 버튼 클릭 시 모달 열기
+  // 힌트 버튼 클릭 시 모달 열기 및 감점 처리
   const showHint = (hint: typeof hintData[0]) => {
+    // [수정] viewHint 함수 호출 (감점 및 기록은 이 함수가 담당)
+    viewHint(hint.id); 
+    
     setCurrentHint(hint);
     setIsModalOpen(true);
   };
@@ -33,7 +38,7 @@ const Page14_HintHub = () => {
         </button>
       </div>
 
-      <h2 className="hint-hub-title">힌트 허브 💡</h2>
+      <h2 className="hint-hub-title">힌트 창고💡</h2>
       <p className="hint-hub-subtitle">궁금한 번호의 힌트를 확인해보세요.</p>
 
       {/* 힌트 버튼 목록 */}
@@ -78,3 +83,4 @@ const Page14_HintHub = () => {
 };
 
 export default Page14_HintHub;
+
