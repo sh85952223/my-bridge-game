@@ -31,30 +31,31 @@
   line-height: 1.4;
 }
 
-/* 퀴즈 영역을 좌우로 나눔 - Grid 시스템 활용 */
+/* 퀴즈 영역을 좌우로 나눔 */
 .match-quiz-grid-container { 
-  display: grid;
-  grid-template-columns: 40% 1fr; /* 40% : 60% 비율 */
+  display: flex; /* Flex 사용 */
+  justify-content: space-between;
   gap: 1rem; 
   width: 100%;
   margin-top: 1rem;
-  flex-grow: 1; /* 남은 공간을 꽉 채움 */
+  flex-grow: 1; 
 }
 
-/* 용어 뱅크 (왼쪽) - Grid */
+/* [수정] 1번 요청: 용어 뱅크 (왼쪽) - Flex Column */
 .term-bank-grid { 
-  display: grid;
-  grid-template-rows: repeat(5, 1fr); /* 5개 행 고정 */
-  gap: 0.8rem; 
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; 
+  width: 38%; 
 }
 
-/* 용어 아이템 - Grid */
+/* [수정] 1번 요청: 용어 아이템 - 크기/높이 수정 */
 .term-item-grid { 
   background-color: #3a3a3a;
   border: 2px solid #555;
   color: #f0f0f0;
   border-radius: 8px;
-  font-size: 1.1rem;
+  font-size: 1rem; 
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -62,8 +63,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0.5rem;
+  padding: 0.75rem 0.5rem; 
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
+  min-height: 50px; 
+  /* [수정] 1번 요청: flex-grow: 1 제거. 카드가 늘어나지 않게 함 */
 }
 .term-item-grid:hover:not(.matched) {
   background-color: #4a4a4a;
@@ -73,29 +76,31 @@
 }
 
 /* [수정] 2번 요청 (선택 강조) */
+/* .selected 스타일이 .matched보다 먼저 정의되어야 우선순위에서 밀리지 않습니다. */
 .term-item-grid.selected {
-  background-color: #f7e04f; /* 라임색 배경 */
-  color: #1e1e1e; /* 어두운 글씨 */
-  border-color: #f7e04f; /* 라임색 테두리 */
+  background-color: #f7e04f;
+  color: #1e1e1e;
+  border-color: #f7e04f;
   transform: scale(1.02); 
   box-shadow: 0 0 15px rgba(247, 224, 79, 0.4); 
 }
 
-/* 설명 목록 (오른쪽) - Grid */
+/* [수정] 1번 요청: 설명 목록 (오른쪽) - Flex Column */
 .description-list-grid { 
-  display: grid;
-  grid-template-rows: repeat(5, 1fr); /* 5개 행 고정 */
-  gap: 0.8rem; 
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; 
+  width: 60%; 
 }
 
-/* 설명 아이템 - Grid */
+/* [수정] 1번 요청: 설명 아이템 - 크기/높이 수정 */
 .description-item-grid { 
   background-color: #3a3a3a;
   border: 2px solid #555;
   color: #e0e0e0;
   border-radius: 8px;
-  padding: 1rem;
-  font-size: 0.95rem;
+  padding: 0.75rem; 
+  font-size: 0.9rem; 
   line-height: 1.5;
   transition: all 0.3s ease;
   display: flex;
@@ -104,6 +109,8 @@
   text-align: center;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   cursor: pointer;
+  min-height: 50px; 
+  /* [수정] 1번 요청: flex-grow: 1 제거. 카드가 늘어나지 않게 함 */
 }
 .description-item-grid:hover:not(.matched) {
   background-color: #4a4a4a;
@@ -114,11 +121,11 @@
 
 /* 피드백 메시지 스타일 */
 .feedback-message {
-  min-height: 30px; 
+  min-height: 20px; 
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
+  font-size: 1rem; 
   margin-top: 0.5rem;
 }
 .feedback-message .correct {
@@ -129,34 +136,42 @@
   color: #ff8a80; /* 밝은 빨간색 */
   font-weight: 700;
 }
-/* [수정] 3번 요청 (안내 메시지) */
 .feedback-message .info {
   color: #aaa; /* 회색 텍스트 */
   font-weight: 500;
 }
 
 
-/* 정답 맞힘 (사라지는 애니메이션) */
+/* [수정] 1번 요청: 정답 맞힘 (사라지는 애니메이션) */
 .term-item-grid.matched, 
 .description-item-grid.matched { 
   animation: fadeOutMatched 0.8s forwards ease-out;
   cursor: default;
+  /* [수정] 1번 요청: Flex에 맞게 수정 */
+  flex-shrink: 0; /* 줄어들지 않음 */
+  height: 0;
+  min-height: 0; 
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  border-width: 0;
+  overflow: hidden; 
+  font-size: 0; 
 }
 @keyframes fadeOutMatched {
   0% {
     opacity: 1;
-    background-color: #28a745; /* 정답 초록색 */
+    background-color: #28a745; 
     border-color: #a6ff00;
     transform: scale(1);
-  }
-  50% {
-    opacity: 0.5;
-    transform: scale(1.05);
+    min-height: 50px; /* 원래 높이 */
   }
   100% {
     opacity: 0;
     transform: scale(0.9);
     height: 0; 
+    min-height: 0;
     padding-top: 0;
     padding-bottom: 0;
     margin-top: 0;
@@ -179,37 +194,32 @@
   40%, 80% { transform: translateX(5px); }
 }
 
-/* [수정] 4번 요청 (하단 버튼) */
+/* 하단 버튼 (Page 16 삭제됨) */
 .quiz-actions-container {
   display: flex;
   flex-direction: column; 
-  align-items: center; /* '다음' 버튼 하나만 중앙 정렬 */
+  align-items: center;
   gap: 1rem; 
   width: 100%;
-  margin-top: 2rem; 
+  margin-top: 1rem; 
 }
-/* [신규] 4번 요청 (버튼 하나만 있을 때) */
 .quiz-actions-container.single-button {
   margin-top: auto; /* 페이지 하단으로 밀기 */
   padding-top: 1rem; /* 상단 여백 */
 }
 .quiz-actions-container.single-button .next-button-styled {
   width: 100%;
-  max-width: 300px; /* 버튼 최대 너비 */
+  max-width: 300px; 
   margin: 0;
 }
 
-/* [삭제] 4번 요청 ('그림 확인' 버튼) */
-/* .hint-button-main { ... } */
-/* .hint-button-main:hover { ... } */
-
-/* .next-button-styled 는 PageStyles.css의 공용 스타일을 사용 */
-/* 이 파일에서 .next-button-styled 관련 스타일은 삭제해도 됩니다. */
-
-
-/* --- [삭제] 4번 요청 (Page 16) --- */
-/* .page16-reference { ... } */
-/* .reference-title { ... } */
-/* .reference-list { ... } */
-/* ... (Page 16 관련 모든 스타일 삭제) ... */
+/* 비활성화 버튼 스타일 */
+.next-button-styled:disabled {
+  background-color: #555;
+  color: #888;
+  cursor: not-allowed;
+  opacity: 0.7;
+  box-shadow: none;
+  transform: none;
+}
 

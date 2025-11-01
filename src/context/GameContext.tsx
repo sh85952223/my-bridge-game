@@ -15,12 +15,14 @@ interface GameContextType {
   currentPage: number;
   gameDocId: string | null;
   viewedHints: Set<number>;
-  structureQuizSolved: boolean[]; // Page 13 퀴즈 정답 상태
+  structureQuizSolved: boolean[]; // Page 13 퀴즈 상태
+  matchQuizSolved: Set<string>;   // [신규] Page 15 퀴즈 상태
   startGame: (p1Id: string, p1Name: string, p2Id: string, p2Name: string) => Promise<void>;
   updateScore: (points: number) => void;
   setCurrentPage: Dispatch<SetStateAction<number>>;
   viewHint: (hintId: number) => void;
   setStructureQuizSolved: Dispatch<SetStateAction<boolean[]>>; 
+  setMatchQuizSolved: Dispatch<SetStateAction<Set<string>>>; // [신규]
 }
 
 interface GameProviderProps {
@@ -49,6 +51,7 @@ export const GameProvider = ({ children }: GameProviderProps) => {
   const [gameDocId, setGameDocId] = useState<string | null>(null);
   const [viewedHints, setViewedHints] = useState<Set<number>>(new Set());
   const [structureQuizSolved, setStructureQuizSolved] = useState([false, false, false, false, false, false]);
+  const [matchQuizSolved, setMatchQuizSolved] = useState<Set<string>>(new Set()); // [신규]
 
   /**
    * 게임 시작 함수
@@ -71,7 +74,8 @@ export const GameProvider = ({ children }: GameProviderProps) => {
       setGameDocId(p1Id); 
       setCurrentPage(1); 
       setViewedHints(new Set()); 
-      setStructureQuizSolved([false, false, false, false, false, false]); // 퀴즈 상태 초기화
+      setStructureQuizSolved([false, false, false, false, false, false]); 
+      setMatchQuizSolved(new Set()); // [신규] 퀴즈 상태 초기화
 
       console.log("게임 시작! Firebase 문서 ID:", p1Id);
 
@@ -124,11 +128,13 @@ export const GameProvider = ({ children }: GameProviderProps) => {
     gameDocId,
     viewedHints,
     structureQuizSolved, 
+    matchQuizSolved, // [신규]
     startGame,
     updateScore,
     setCurrentPage,
     viewHint,
     setStructureQuizSolved, 
+    setMatchQuizSolved, // [신규]
   };
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;

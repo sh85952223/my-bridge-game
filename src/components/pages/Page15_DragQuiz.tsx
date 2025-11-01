@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { useGame } from '../../context/GameContext';
 import './PageStyles.css';      // 공용 스타일
 import './PageStyles_v3.css';   // v3 스타일
@@ -21,52 +21,54 @@ const DESCRIPTIONS = [
 ];
 
 const Page15_DragQuiz = () => {
-  const { updateScore, setCurrentPage } = useGame();
+  // [수정] 3번 요청: 전역 상태에서 matchQuizSolved 가져오기
+  const { updateScore, setCurrentPage, matchQuizSolved, setMatchQuizSolved } = useGame();
   
-  const [correctMatches, setCorrectMatches] = useState<Set<string>>(new Set());
+  // [삭제] 3번 요청: 로컬 상태 대신 전역 상태 사용
+  // const [correctMatches, setCorrectMatches] = useState<Set<string>>(new Set());
   const [selectedTermId, setSelectedTermId] = useState<string | null>(null);
-  const [feedback, setFeedback] = useState<React.ReactNode>('');
+  const [feedback, setFeedback] = useState<ReactNode>('');
   const [wrongMatch, setWrongMatch] = useState<{ termId: string, descId: string } | null>(null);
 
-  const allSolved = correctMatches.size === TERMS.length;
+  const allSolved = matchQuizSolved.size === TERMS.length;
 
   const handleTermClick = (termId: string) => {
-    if (correctMatches.has(termId)) return;
+    // [수정] 3번 요청: matchQuizSolved 사용
+    if (matchQuizSolved.has(termId)) return;
     
     if (selectedTermId === termId) {
       setSelectedTermId(null);
-      setFeedback(null); // 선택 해제 시 피드백 없음
+      setFeedback(null); 
     } else {
-      setSelectedTermId(termId);
+      setSelectedTermId(termId); // 2번 요청 (선택 상태 설정)
       setWrongMatch(null); 
-      setFeedback(<span className="info">알맞은 설명을 선택하세요.</span>); // [수정] 3번 요청 (기본 피드백)
+      setFeedback(<span className="info">알맞은 설명을 선택하세요.</span>); 
     }
   };
 
-  // [수정] 3번 요청 (피드백 로직, 점수)
   const handleDescriptionClick = (description: typeof DESCRIPTIONS[0]) => {
-    // 1. 용어를 먼저 선택했는지 확인
     if (!selectedTermId) {
       setFeedback(<span className="info">먼저 왼쪽의 용어를 선택하세요! 💡</span>);
       return;
     }
 
-    if (correctMatches.has(description.answerId)) return;
+    // [수정] 3번 요청: matchQuizSolved 사용
+    if (matchQuizSolved.has(description.answerId)) return;
 
     if (selectedTermId === description.answerId) {
       // --- 정답 ---
       updateScore(10);
-      setCorrectMatches(prev => new Set(prev).add(selectedTermId));
+      // [수정] 3번 요청: setMatchQuizSolved 사용
+      setMatchQuizSolved(prev => new Set(prev).add(selectedTermId));
       setFeedback(<span className="correct">정답입니다! 🥳 +10점</span>);
       setSelectedTermId(null); 
       setWrongMatch(null); 
     } else {
       // --- 오답 ---
-      updateScore(-5); // [수정] 3번 요청 (오답 시 감점)
-      setFeedback(<span className="wrong">오답! 😥 -5점</span>); // [수정] 3번 요청 (오답 피드백)
+      updateScore(-5); 
+      setFeedback(<span className="wrong">오답! 😥 -5점</span>); 
       setWrongMatch({ termId: selectedTermId, descId: description.id });
-      // 오답 시에도 선택 유지 (다른 설명 클릭 가능)
-      // setSelectedTermId(null); 
+      // 오답 시에도 선택 유지
       
       setTimeout(() => {
         setWrongMatch(null);
@@ -77,24 +79,19 @@ const Page15_DragQuiz = () => {
   return (
     <div className="page-container page15-match-quiz-styled"> 
       
-      {/* 상단 네비게이션 */}
       <div className="nav-button-container top">
-        {/* [수정] 4번 요청 (이전 버튼) */}
         <button className="nav-button prev-button" onClick={() => setCurrentPage(13)}>
           {'<'} 이전 (구조 퀴즈)
         </button>
       </div>
 
-      {/* [수정] 1번 요청 (아이콘 삭제) */}
       <h2 className="match-quiz-title">퀴즈: 용어-설명 짝맞추기</h2> 
       <p className="match-quiz-subtitle">왼쪽 단어를 먼저 클릭한 후, 알맞은 설명을 클릭하세요.</p>
 
-      {/* 피드백 메시지 */}
       <div className="feedback-message" style={{ minHeight: '30px', marginBottom: '1rem' }}>
         {feedback}
       </div>
 
-      {/* 퀴즈 컨테이너 (양쪽 분리) */}
       <div className="match-quiz-grid-container"> 
         {/* 1. 용어 뱅크 (클릭 아이템) */}
         <div className="term-bank-grid"> 
@@ -103,8 +100,8 @@ const Page15_DragQuiz = () => {
               key={term.id}
               className={`
                 term-item-grid 
-                ${selectedTermId === term.id ? 'selected' : ''}
-                ${correctMatches.has(term.id) ? 'matched' : ''}
+                ${selectedTermId === term.id ? 'selected' : ''} 
+                ${matchQuizSolved.has(term.id) ? 'matched' : ''}
                 ${wrongMatch?.termId === term.id ? 'wrong' : ''}
               `}
               onClick={() => handleTermClick(term.id)}
@@ -121,7 +118,7 @@ const Page15_DragQuiz = () => {
               key={desc.id}
               className={`
                 description-item-grid 
-                ${correctMatches.has(desc.answerId) ? 'matched' : ''}
+                ${matchQuizSolved.has(desc.answerId) ? 'matched' : ''}
                 ${wrongMatch?.descId === desc.id ? 'wrong' : ''}
               `}
               onClick={() => handleDescriptionClick(desc)}
@@ -133,14 +130,13 @@ const Page15_DragQuiz = () => {
       </div>
 
       {/* 하단 버튼 */}
-      {/* [수정] 4번 요청 ('그림 확인' 버튼 삭제) */}
       <div className="quiz-actions-container single-button">
         <button
           className="next-button-styled"
-          onClick={() => setCurrentPage(17)} // 다음 섹션(Page 17)으로 이동
+          onClick={() => setCurrentPage(17)} // 다음 섹션으로 이동
           disabled={!allSolved}
         >
-          {allSolved ? (<span>{'>'} 다음</span>) : '5개 모두 완료 시 활성화'}
+          <span>{'>'} 다음</span> 
         </button>
       </div>
 
