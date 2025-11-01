@@ -21,26 +21,28 @@ const DESCRIPTIONS = [
 ];
 
 const Page15_DragQuiz = () => {
-  // [수정] 3번 요청: 전역 상태에서 matchQuizSolved 가져오기
   const { updateScore, setCurrentPage, matchQuizSolved, setMatchQuizSolved } = useGame();
   
-  // [삭제] 3번 요청: 로컬 상태 대신 전역 상태 사용
-  // const [correctMatches, setCorrectMatches] = useState<Set<string>>(new Set());
   const [selectedTermId, setSelectedTermId] = useState<string | null>(null);
-  const [feedback, setFeedback] = useState<ReactNode>('');
+  
+  // [수정] 1번: 초기 피드백 메시지를 명확하게 설정
+  const [feedback, setFeedback] = useState<ReactNode>(
+    <span className="info">왼쪽 용어를 먼저 선택하세요 💡</span>
+  );
+  
   const [wrongMatch, setWrongMatch] = useState<{ termId: string, descId: string } | null>(null);
 
   const allSolved = matchQuizSolved.size === TERMS.length;
 
   const handleTermClick = (termId: string) => {
-    // [수정] 3번 요청: matchQuizSolved 사용
     if (matchQuizSolved.has(termId)) return;
     
     if (selectedTermId === termId) {
       setSelectedTermId(null);
-      setFeedback(null); 
+      // [수정] 1번: 선택 취소 시에도 초기 안내 메시지 표시
+      setFeedback(<span className="info">왼쪽 용어를 먼저 선택하세요 💡</span>); 
     } else {
-      setSelectedTermId(termId); // 2번 요청 (선택 상태 설정)
+      setSelectedTermId(termId);
       setWrongMatch(null); 
       setFeedback(<span className="info">알맞은 설명을 선택하세요.</span>); 
     }
@@ -48,17 +50,16 @@ const Page15_DragQuiz = () => {
 
   const handleDescriptionClick = (description: typeof DESCRIPTIONS[0]) => {
     if (!selectedTermId) {
+      // [수정] 1번: 피드백 메시지 일관성 유지 (기존에도 잘 되어있었음)
       setFeedback(<span className="info">먼저 왼쪽의 용어를 선택하세요! 💡</span>);
       return;
     }
 
-    // [수정] 3번 요청: matchQuizSolved 사용
     if (matchQuizSolved.has(description.answerId)) return;
 
     if (selectedTermId === description.answerId) {
       // --- 정답 ---
       updateScore(10);
-      // [수정] 3번 요청: setMatchQuizSolved 사용
       setMatchQuizSolved(prev => new Set(prev).add(selectedTermId));
       setFeedback(<span className="correct">정답입니다! 🥳 +10점</span>);
       setSelectedTermId(null); 
@@ -68,7 +69,6 @@ const Page15_DragQuiz = () => {
       updateScore(-5); 
       setFeedback(<span className="wrong">오답! 😥 -5점</span>); 
       setWrongMatch({ termId: selectedTermId, descId: description.id });
-      // 오답 시에도 선택 유지
       
       setTimeout(() => {
         setWrongMatch(null);
@@ -86,7 +86,12 @@ const Page15_DragQuiz = () => {
       </div>
 
       <h2 className="match-quiz-title">퀴즈: 용어-설명 짝맞추기</h2> 
-      <p className="match-quiz-subtitle">왼쪽 단어를 먼저 클릭한 후, 알맞은 설명을 클릭하세요.</p>
+      
+      {/* [수정] 1번: 혼란을 주던 정적 <p> 태그 삭제 */}
+      {/* <p className="match-quiz-subtitle">왼쪽 단어를 먼저 클릭한 후, 알맞은 설명을 클릭하세요.</p> */}
+      {/* 대신 부제목을 좀 더 명확하게 수정 */}
+      <p className="match-quiz-subtitle">왼쪽 용어와 알맞은 설명을 짝맞춰 주세요.</p>
+
 
       <div className="feedback-message" style={{ minHeight: '30px', marginBottom: '1rem' }}>
         {feedback}
@@ -145,4 +150,3 @@ const Page15_DragQuiz = () => {
 };
 
 export default Page15_DragQuiz;
-
