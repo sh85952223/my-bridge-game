@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, type ReactNode, type SetStateAction, type Dispatch } from 'react';
+import { createContext, useState, type ReactNode, type SetStateAction, type Dispatch } from 'react';
 import { db } from '../firebaseConfig';
 import { doc, setDoc, serverTimestamp, updateDoc } from 'firebase/firestore';
 
@@ -8,7 +8,13 @@ interface Player {
   name: string;
 }
 
-interface GameContextType {
+// [수정] 누락되었던 GameProviderProps 인터페이스 추가
+interface GameProviderProps {
+  children: ReactNode;
+}
+
+// [수정] 'export' 추가 (useGame.ts에서 써야 함)
+export interface GameContextType { 
   player1: Player;
   player2: Player;
   score: number;
@@ -16,34 +22,24 @@ interface GameContextType {
   gameDocId: string | null;
   viewedHints: Set<number>;
   structureQuizSolved: boolean[]; // Page 13 퀴즈 상태
-  matchQuizSolved: Set<string>;   // [신규] Page 15 퀴즈 상태
+  matchQuizSolved: Set<string>;   // Page 15 퀴즈 상태
   startGame: (p1Id: string, p1Name: string, p2Id: string, p2Name: string) => Promise<void>;
   updateScore: (points: number) => void;
   setCurrentPage: Dispatch<SetStateAction<number>>;
   viewHint: (hintId: number) => void;
   setStructureQuizSolved: Dispatch<SetStateAction<boolean[]>>; 
-  setMatchQuizSolved: Dispatch<SetStateAction<Set<string>>>; // [신규]
-}
-
-interface GameProviderProps {
-  children: ReactNode;
+  setMatchQuizSolved: Dispatch<SetStateAction<Set<string>>>;
 }
 // ---------------
 
 // 1. Context 생성
-const GameContext = createContext<GameContextType | undefined>(undefined);
+// eslint-disable-next-line react-refresh/only-export-components
+export const GameContext = createContext<GameContextType | undefined>(undefined);
 
-// 2. custom hook
-export const useGame = () => {
-  const context = useContext(GameContext);
-  if (!context) {
-    throw new Error("useGame must be used within a GameProvider");
-  }
-  return context;
-};
+// 2. custom hook (useGame) -> useGame.ts로 이동됨
 
 // 3. Context Provider 컴포넌트
-export const GameProvider = ({ children }: GameProviderProps) => {
+export const GameProvider = ({ children }: GameProviderProps) => { // [수정] GameProviderProps 타입 적용
   const [player1, setPlayer1] = useState<Player>({ id: '', name: '' });
   const [player2, setPlayer2] = useState<Player>({ id: '', name: '' });
   const [score, setScore] = useState(0);
@@ -51,11 +47,8 @@ export const GameProvider = ({ children }: GameProviderProps) => {
   const [gameDocId, setGameDocId] = useState<string | null>(null);
   const [viewedHints, setViewedHints] = useState<Set<number>>(new Set());
   const [structureQuizSolved, setStructureQuizSolved] = useState([false, false, false, false, false, false]);
-  const [matchQuizSolved, setMatchQuizSolved] = useState<Set<string>>(new Set()); // [신규]
+  const [matchQuizSolved, setMatchQuizSolved] = useState<Set<string>>(new Set());
 
-  /**
-   * 게임 시작 함수
-   */
   const startGame = async (p1Id: string, p1Name: string, p2Id: string, p2Name: string) => {
     try {
       const gameSessionRef = doc(db, "gameSessions", p1Id); 
@@ -75,7 +68,7 @@ export const GameProvider = ({ children }: GameProviderProps) => {
       setCurrentPage(1); 
       setViewedHints(new Set()); 
       setStructureQuizSolved([false, false, false, false, false, false]); 
-      setMatchQuizSolved(new Set()); // [신규] 퀴즈 상태 초기화
+      setMatchQuizSolved(new Set()); 
 
       console.log("게임 시작! Firebase 문서 ID:", p1Id);
 
@@ -86,9 +79,6 @@ export const GameProvider = ({ children }: GameProviderProps) => {
     }
   };
 
-  /**
-   * 점수 업데이트 함수
-   */
   const updateScore = async (points: number) => {
     const newScore = score + points;
     setScore(newScore); 
@@ -106,9 +96,6 @@ export const GameProvider = ({ children }: GameProviderProps) => {
     }
   };
 
-  /**
-   * 힌트 보기 함수
-   */
   const viewHint = (hintId: number) => {
     if (!viewedHints.has(hintId)) {
       updateScore(-5); 
@@ -119,7 +106,6 @@ export const GameProvider = ({ children }: GameProviderProps) => {
     }
   };
 
-
   const value: GameContextType = {
     player1,
     player2,
@@ -128,15 +114,14 @@ export const GameProvider = ({ children }: GameProviderProps) => {
     gameDocId,
     viewedHints,
     structureQuizSolved, 
-    matchQuizSolved, // [신규]
+    matchQuizSolved,
     startGame,
     updateScore,
     setCurrentPage,
     viewHint,
     setStructureQuizSolved, 
-    setMatchQuizSolved, // [신규]
+    setMatchQuizSolved,
   };
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
 };
-

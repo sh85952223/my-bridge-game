@@ -1,0 +1,80 @@
+/* src/components/pages/Page02_HanjaIntro/Page02_HanjaIntro.module.css (최종 코드) */
+
+/* --- 1. [공용 복사] 페이지 컨테이너 기본 스타일 (.page-container 역할) --- */
+.pageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #2a2a2a; 
+    color: #ffffff;
+    border-radius: 0 0 12px 12px; 
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    min-height: 700px;
+    padding: 1.5rem; 
+    box-sizing: border-box;
+    justify-content: space-between; 
+    position: relative; 
+    overflow: hidden;
+}
+@media (min-width: 500px) {
+    .pageContainer {
+        padding: 2.5rem;
+    }
+}
+
+
+/* --- 2. [공용 복사] '다음' 버튼 스타일 (.next-button-styled 역할) --- */
+.nextButtonStyled {
+    background-color: #f7e04f;
+    color: #1a1a1a;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 30px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+    min-width: 180px;
+    margin-top: auto; /* 버튼을 항상 하단에 위치시킴 */
+    margin-bottom: 2rem;
+    z-index: 10;
+}
+.nextButtonStyled:hover {
+    transform: scale(1.05);
+    background-color: #fff2a8;
+}
+
+
+/* --- 3. [전용 스타일] Page 2 전용 스타일 (.page2 역할) --- */
+.page2 {
+    /* Page 1과 동일하게 콘텐츠와 버튼을 상/하단으로 분리합니다. */
+    justify-content: space-between; 
+}
+.hanjaDefinitionGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem; /* 한자 아이템 사이 간격 */
+    margin-top: 6rem; /* 상단 여백 */
+    align-items: center; /* 가운데 정렬 */
+}
+.hanjaItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.hanjaChar {
+    /* [핵심] 한자 문자 크기 */
+    font-size: 6rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+    line-height: 1.1;
+}
+.hanjaMeaning {
+    /* [핵심] 한자 뜻풀이 크기 */
+    font-size: 2.5rem;
+    font-weight: 500;
+    color: #f0f0f0;
+    margin-top: 0.5rem;
+}

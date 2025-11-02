@@ -1,0 +1,131 @@
+/* src/components/pages/Page03_HanjaQuiz1/Page03_HanjaQuiz1.module.css (최종 코드) */
+
+/* --- 1. [공용 복사] 페이지 컨테이너 기본 스타일 (.page-container 역할) --- */
+.pageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #2a2a2a; 
+    color: #ffffff;
+    border-radius: 0 0 12px 12px; 
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    min-height: 700px;
+    padding: 1.5rem; 
+    box-sizing: border-box;
+    justify-content: space-between; 
+    position: relative; 
+    overflow: hidden;
+}
+@media (min-width: 500px) {
+    .pageContainer {
+        padding: 2.5rem;
+    }
+}
+
+
+/* --- 2. [공용 복사] '다음' 버튼 스타일 (.next-button-styled 역할) --- */
+.nextButtonStyled {
+    background-color: #f7e04f;
+    color: #1a1a1a;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 30px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+    min-width: 180px;
+    margin-top: auto; /* 버튼을 항상 하단에 위치시킴 */
+    margin-bottom: 2rem;
+    z-index: 10;
+}
+.nextButtonStyled:hover {
+    transform: scale(1.05);
+    background-color: #fff2a8;
+}
+
+
+/* --- 3. [전용 스타일] Page 3 전용 스타일 (.page3 역할) --- */
+.page3 {
+    justify-content: space-between;
+}
+.quizContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 6rem;
+}
+.hanjaQuizChar {
+    font-size: 8rem; /* 퀴즈 한자 크기 */
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+    line-height: 1.1;
+}
+.hanjaQuizMeaning {
+    font-size: 2.5rem;
+    font-weight: 500;
+    color: #f0f0f0;
+    margin-top: 0.5rem;
+}
+.quizForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 300px; /* 입력창 최대 너비 */
+    margin-top: 2rem;
+}
+/* [핵심] 입력창 스타일 (.quiz-input 역할) */
+.quizInput {
+    width: 100%; 
+    padding: 12px;
+    font-size: 1.2rem;
+    border: 1px solid #777;
+    border-radius: 5px;
+    background-color: #2a2a2a; /* 페이지 배경과 동일하게 유지 */
+    color: #ffffff;
+    box-sizing: border-box;
+    text-align: center; 
+}
+.quizInput:focus {
+    border-color: #f7e04f;
+    outline: none;
+}
+.quizSubmitButton {
+    /* quizSubmitButton과 loginStartButton이 함께 사용되므로, 
+       quizSubmitButton은 레이아웃만 정의하고 색상은 loginStartButton을 사용합니다. */
+    width: 100%;
+    margin-top: 0.5rem;
+}
+/* [핵심] 정답 확인 버튼 스타일 (.login-start-button 역할) */
+.loginStartButton {
+    /* LoginScreen에서 가져온 라임색 버튼 스타일 */
+    padding: 12px 20px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1a1a1a; 
+    background-color: #f7e04f; 
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s, opacity 0.2s;
+}
+.loginStartButton:hover {
+    background-color: #fff2a8;
+}
+
+/* 피드백 메시지 */
+.feedbackMessage {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-top: 1rem;
+    text-align: center;
+}
+.correct {
+    color: #81c784; /* 정답: 밝은 초록색 */
+}
+.wrong {
+    color: #ff8a80; /* 오답: 밝은 빨간색 */
+}

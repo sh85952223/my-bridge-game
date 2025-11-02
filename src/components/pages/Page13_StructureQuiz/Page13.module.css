@@ -1,0 +1,280 @@
+/* src/components/pages/Page13_StructureQuiz/Page13.module.css (최종 코드) */
+
+/* --- 1. [공용 복사] 페이지 컨테이너 기본 스타일 (.page-container 역할) --- */
+.pageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #2a2a2a; 
+    color: #ffffff;
+    border-radius: 0 0 12px 12px; 
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    min-height: 700px;
+    padding: 1.5rem; 
+    box-sizing: border-box;
+    justify-content: space-between; 
+    position: relative; 
+    overflow: hidden;
+}
+@media (min-width: 500px) {
+    .pageContainer {
+        padding: 2.5rem;
+    }
+}
+
+
+/* --- 2. [공용 복사] '다음' 버튼 스타일 (.next-button-styled 역할) --- */
+.nextButtonStyled {
+    background-color: #f7e04f;
+    color: #1a1a1a;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 30px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+    min-width: 180px;
+    margin-top: auto; 
+    margin-bottom: 0; 
+    z-index: 10;
+    flex: 1; 
+    margin: 0;
+}
+.nextButtonStyled:hover:not(:disabled) {
+    transform: scale(1.05);
+    background-color: #fff2a8;
+}
+.nextButtonStyled:disabled {
+    background-color: #555;
+    color: #888;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+
+/* --- 3. [복사] 상단 네비게이션 버튼 스타일 (.nav-button 역할) --- */
+.navButtonContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.top {
+    margin-top: 0;
+    margin-bottom: auto; 
+    padding: 0; 
+}
+.navButton {
+    background-color: #3a3a3a; 
+    color: #f0f0f0;
+    border: 1px solid #555;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 100px;
+}
+.prevButton {
+    margin-right: auto;
+}
+.navButton:hover {
+    background-color: #4a4a4a;
+}
+
+
+/* --- 4. [전용 스타일] Page 13 퀴즈 레이아웃 --- */
+.page13Quiz {
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem; 
+}
+.quizInstructionText {
+    font-size: 1.1rem;
+    margin-top: 0;
+    text-align: center;
+    color: #ccc;
+    line-height: 1.5; 
+    margin-bottom: 1rem; 
+}
+.quizDiagramContainer {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+.quizDiagramImage {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* 퀴즈 번호 버튼 행 */
+.quizButtonRow {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem; 
+    width: 100%;
+    margin: 1rem 0; 
+}
+.quizNumberButton {
+    background-color: #3a3a3a;
+    border: 2px solid #555;
+    color: #f0f0f0;
+    border-radius: 8px;
+    padding: 0.75rem 0; 
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 50px; 
+    height: 50px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.quizNumberButton:hover:not(:disabled):not(.solved) {
+    background-color: #4a4a4a;
+    border-color: #777;
+}
+.quizNumberButton.solved {
+    background-color: #28a745; 
+    border-color: #a6ff00;
+    color: white;
+    cursor: default;
+}
+
+/* 하단 버튼 그룹 */
+.quizActionsContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 1rem;
+    margin-top: 1rem; 
+    margin-bottom: 2rem; 
+}
+.hintButtonMain {
+    background-color: #3a3a3a;
+    color: #f7e04f; 
+    border: 1px solid #555;
+    border-radius: 8px;
+    padding: 14px 20px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex: 1; 
+}
+.hintButtonMain:hover {
+    background-color: #4a4a4a;
+}
+
+
+/* --- 5. 모달 및 폼 스타일 (Page 13, 14 공용) --- */
+
+.quizModalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-out;
+}
+.quizModalContent {
+    background-color: #3a3a3a;
+    color: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    text-align: center;
+    width: 90%;
+    max-width: 300px; /* [수정] 모바일 최적화를 위해 너비 조정 */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    border: 1px solid #555;
+}
+.quizModalContent h2 {
+    color: #f7e04f;
+    margin-top: 0;
+    font-size: 1.5rem;
+}
+.quizModalContent p {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+.quizForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+/* [핵심 복구] 퀴즈 입력창 스타일 */
+.quizInput {
+    width: 100%; 
+    padding: 12px;
+    font-size: 1.2rem;
+    border: 1px solid #f7e04f; /* 경계선을 포인트 컬러로 명시 */
+    border-radius: 5px;
+    background-color: #fff; /* 입력창 배경을 흰색으로 변경 */
+    color: #1a1a1a; /* 입력 텍스트를 검은색으로 */
+    box-sizing: border-box;
+    text-align: center; 
+}
+.quizInput:focus {
+    border-color: #f7e04f;
+    outline: none;
+    box-shadow: 0 0 5px rgba(247, 224, 79, 0.5);
+}
+/* 정답 확인 버튼 */
+.quizModalSubmitButton { 
+    background-color: #f7e04f;
+    color: #1a1a1a;
+    border: none;
+    border-radius: 8px; 
+    padding: 12px 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    width: 100%;
+    margin: 0;
+}
+.quizModalSubmitButton:hover {
+    background-color: #fff2a8;
+}
+
+.modalCloseButton {
+    background-color: #555;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    width: 100%;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+.modalCloseButton:hover {
+    background-color: #777;
+}
+
+/* 피드백 메시지 스타일 */
+.feedbackMessage {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-top: 1rem;
+    text-align: center;
+}
+.correct {
+    color: #81c784; 
+}
+.wrong {
+    color: #ff8a80; 
+}

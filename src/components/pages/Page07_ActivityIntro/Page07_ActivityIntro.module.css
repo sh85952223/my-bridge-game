@@ -1,0 +1,101 @@
+/* src/components/pages/Page07_ActivityIntro/Page07_ActivityIntro.module.css (최종 코드) */
+
+/* --- 1. [공용 복사] 페이지 컨테이너 기본 스타일 (.page-container 역할) --- */
+.pageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #2a2a2a; 
+    color: #ffffff;
+    border-radius: 0 0 12px 12px; 
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    min-height: 700px;
+    padding: 1.5rem; 
+    box-sizing: border-box;
+    justify-content: space-between; 
+    position: relative; 
+    overflow: hidden;
+}
+@media (min-width: 500px) {
+    .pageContainer {
+        padding: 2.5rem;
+    }
+}
+
+
+/* --- 2. [공용 복사] '다음' 버튼 스타일 (.next-button-styled 역할) --- */
+.nextButtonStyled {
+    background-color: #f7e04f;
+    color: #1a1a1a;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 30px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+    min-width: 180px;
+    margin-top: auto; 
+    margin-bottom: 2rem;
+    z-index: 10;
+}
+.nextButtonStyled:hover {
+    transform: scale(1.05);
+    background-color: #fff2a8;
+}
+
+
+/* --- 3. [전용 스타일] Page 7 전용 스타일 (.page7 역할) --- */
+.page7 {
+    /* 버튼과 카드 콘텐츠를 상/하단으로 분리 */
+    justify-content: space-between; 
+    align-items: center; 
+}
+.cardContent {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    /* 카드를 페이지 중앙에 위치시키기 위해 상단 여백 설정 */
+    margin-top: 10vh; 
+    
+    /* 카드 디자인: 배경색, 패딩, 그림자 */
+    background-color: #383838; /* 카드 배경색 */
+    border-radius: 15px;
+    padding: 3rem 2rem;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    z-index: 5;
+}
+
+.cardDecoration {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+}
+
+.cardTitle {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1.4;
+    color: #f7e04f; /* 제목색 강조 */
+    margin: 0;
+    z-index: 6;
+}
+
+/* --- 배경 영문 텍스트 스타일 (.card-bg-text-en 역할) --- */
+.cardBgTextEn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 8rem; /* 매우 크게 */
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.05); /* 매우 투명한 흰색 */
+    pointer-events: none; /* 클릭 방지 */
+    letter-spacing: 5px;
+    z-index: 1; /* 카드 내용 뒤로 배치 */
+}

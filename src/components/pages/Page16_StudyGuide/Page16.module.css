@@ -1,0 +1,101 @@
+/* src/components/pages/Page16_StudyGuide/Page16.module.css (전체 코드) */
+
+/* --- 1. [통합] 페이지 컨테이너 기본 스타일 (.page-container) --- */
+.pageContainer { 
+  /* 기존 .page-container에서 필요한 스타일을 복사 (Page 16의 최상위 스타일) */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #2a2a2a; 
+  color: #ffffff;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  min-height: 700px; 
+  padding: 1.5rem; /* v1 공용 패딩 */
+  box-sizing: border-box;
+  justify-content: space-between; 
+  position: relative; 
+  overflow: hidden;
+}
+
+@media (min-width: 500px) {
+  .pageContainer {
+    padding: 2.5rem;
+  }
+}
+
+/* --- 2. [통합] 공용 텍스트 스타일 (.gs-title, .gs-subtitle) --- */
+
+.title { 
+  color: #f7e04f;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  text-align: center;
+  letter-spacing: -0.05em; 
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  margin: 0 0 1rem 0;
+  text-align: center;
+  color: #ccc;
+  line-height: 1.4;
+}
+
+
+/* --- 3. [통합] 공용 버튼 스타일 (.gs-button-primary) --- */
+
+.buttonPrimary {
+  background-color: #f7e04f;
+  color: #1a1a1a;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 30px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+  min-width: 180px;
+  z-index: 10;
+}
+.buttonPrimary:hover:not(:disabled) {
+  transform: scale(1.05);
+  background-color: #fff2a8;
+}
+.buttonPrimary:disabled {
+  background-color: #555;
+  color: #888;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+
+/* --- 4. Page 16 전용 스타일 --- */
+
+.studyContainer {
+  /* .pageContainer 스타일 위로 추가되는 전용 레이아웃 */
+  justify-content: flex-start; /* 버튼이 하단에 고정되도록 space-between을 덮어씁니다. */
+  align-items: center;
+  gap: 1.5rem; 
+}
+
+/* 다이어그램 이미지 */
+.diagramImage {
+  width: 100%;
+  max-width: 450px; 
+  height: auto;
+  border-radius: 12px;
+  /* background-color: #fff; 제거 */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* 경고 텍스트 */
+.warningText {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #ff8a80; 
+  margin: 0.5rem 0 0 0;
+  text-align: center;
+}

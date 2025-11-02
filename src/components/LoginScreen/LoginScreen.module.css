@@ -1,0 +1,114 @@
+/* src/components/LoginScreen/LoginScreen.module.css */
+
+/* --- 1. 기본 컨테이너 스타일 (PageStyles.css의 .page-container 역할) --- */
+.pageContainer { 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #2a2a2a; /* 배경색 */
+    color: #ffffff; /* 기본 폰트색 */
+    width: 100%;
+    min-height: 700px;
+    padding: 1.5rem; 
+    box-sizing: border-box;
+    justify-content: space-between; 
+    position: relative; 
+    border-radius: 0 0 12px 12px; /* Score Bar 아래에 위치 */
+    /* Page 16의 module에서 가져온 패딩 미디어 쿼리도 필요할 수 있으나, 일단 v1 스타일로 복사 */
+}
+@media (min-width: 500px) {
+    .pageContainer {
+        padding: 2.5rem;
+    }
+}
+
+
+/* --- 2. LoginScreen 전용 레이아웃 (.login-page 역할) --- */
+.loginPage {
+    justify-content: flex-start; /* 콘텐츠 상단 정렬 */
+    gap: 1.5rem;
+}
+
+.mainTitle {
+    margin: 0;
+    font-size: 2.2rem;
+    color: #f7e04f; /* 제목색을 포인트 컬러로 (Page 16의 .title 참고) */
+    font-weight: 700;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+}
+.note {
+    font-size: 0.9rem;
+    color: #aaa;
+    text-align: center;
+}
+
+/* --- 3. 인풋 그룹 및 필드 스타일 --- */
+
+.playerInputs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    padding: 1rem;
+    border: 1px solid #555; 
+    background-color: #3a3a3a;
+    border-radius: 8px;
+    text-align: left;
+}
+.playerInputs h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+    color: #f0f0f0;
+}
+.inputRow {
+    display: flex;
+    gap: 1rem;
+}
+.inputField {
+    width: 100%; 
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #777;
+    border-radius: 5px;
+    background-color: #2a2a2a;
+    color: #ffffff;
+    box-sizing: border-box;
+}
+.inputField:focus {
+    border-color: #f7e04f;
+    outline: none;
+}
+
+/* --- 4. 시작 버튼 스타일 --- */
+.loginStartButton {
+    padding: 12px 20px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1a1a1a; 
+    background-color: #f7e04f; 
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s, opacity 0.2s;
+}
+.loginStartButton:hover:not(:disabled) {
+    background-color: #fff2a8; 
+}
+.loginStartButton:disabled {
+    background-color: #a0a0a0;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* 에러 메시지 */
+.errorMessage {
+    color: #ff8a80; 
+    font-weight: 500;
+    margin: 0;
+    text-align: center;
+}

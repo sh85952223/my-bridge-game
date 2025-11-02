@@ -1,0 +1,122 @@
+/* src/components/pages/Page08_ImageQuiz1/Page08_ImageQuiz1.module.css (최종 코드) */
+
+/* --- 1. [공용 복사] 페이지 컨테이너 기본 스타일 (.page-container 역할) --- */
+.pageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #2a2a2a; 
+    color: #ffffff;
+    border-radius: 0 0 12px 12px; 
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    min-height: 700px;
+    padding: 1.5rem; 
+    box-sizing: border-box;
+    justify-content: space-between; 
+    position: relative; 
+    overflow: hidden;
+}
+@media (min-width: 500px) {
+    .pageContainer {
+        padding: 2.5rem;
+    }
+}
+
+
+/* --- 2. [공용 복사] '다음' 버튼 스타일 (.next-button-styled 역할) --- */
+.nextButtonStyled {
+    background-color: #f7e04f;
+    color: #1a1a1a;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 30px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+    min-width: 180px;
+    margin-top: auto; /* 버튼을 항상 하단에 위치시킴 */
+    margin-bottom: 2rem;
+    z-index: 10;
+}
+.nextButtonStyled:hover {
+    transform: scale(1.05);
+    background-color: #fff2a8;
+}
+
+
+/* --- 3. [전용 스타일] Page 8 전용 스타일 (.page8 역할) --- */
+.page8 {
+    justify-content: flex-start; /* 콘텐츠를 위에서부터 배치 */
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    gap: 0.5rem; /* 요소 간격을 조밀하게 설정 */
+}
+.quizImage {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 10; /* 이미지 비율 */
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+.quizQuestion {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 1rem 0 0.5rem 0;
+    text-align: center;
+}
+.quizInstruction {
+    font-size: 1rem;
+    color: #aaa;
+    margin: 0 0 1.5rem 0;
+    text-align: center;
+}
+
+/* 폼과 인풋 스타일 */
+.quizForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 300px;
+    margin-top: 0; /* Page 8에 맞게 여백 제거 */
+}
+.quizInput {
+    width: 100%; 
+    padding: 12px;
+    font-size: 1.2rem;
+    border: 1px solid #777;
+    border-radius: 5px;
+    background-color: #2a2a2a;
+    color: #ffffff;
+    box-sizing: border-box;
+    text-align: center;
+}
+.quizInput:focus {
+    border-color: #f7e04f;
+    outline: none;
+}
+.quizSubmitButton {
+    /* Page 8에서는 .nextButtonStyled와 함께 사용되므로, 
+       다음 버튼의 공용 스타일을 그대로 사용 */
+    margin-top: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+/* 피드백 메시지 스타일 */
+.feedbackMessage {
+    min-height: 50px; /* 피드백 영역 확보 */
+    font-size: 1.1rem;
+    line-height: 1.4;
+    text-align: center;
+}
+.correct {
+    color: #a6ff00; 
+    font-weight: 700;
+}
+.wrong {
+    color: #ff8a80; 
+    font-weight: 700;
+}

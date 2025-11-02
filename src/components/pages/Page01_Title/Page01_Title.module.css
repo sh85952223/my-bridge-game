@@ -1,0 +1,70 @@
+/* src/components/pages/Page01_Title/Page01_Title.module.css (최종 코드) */
+
+/* --- 1. [공용 복사] 페이지 컨테이너 기본 스타일 (.page-container 역할) --- */
+/* 모든 페이지의 기본 레이아웃을 이 파일에서 정의합니다. */
+.pageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #2a2a2a; /* 배경색 복구 */
+    color: #ffffff; /* 기본 폰트색 복구 */
+    border-radius: 0 0 12px 12px; 
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    min-height: 700px;
+    padding: 1.5rem; 
+    box-sizing: border-box;
+    justify-content: space-between; 
+    position: relative; 
+    overflow: hidden;
+}
+@media (min-width: 500px) {
+    .pageContainer {
+        padding: 2.5rem;
+    }
+}
+
+
+/* --- 2. [공용 복사] '다음' 버튼 스타일 (.next-button-styled 역할) --- */
+.nextButtonStyled {
+    background-color: #f7e04f;
+    color: #1a1a1a;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 30px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+    min-width: 180px;
+    margin-top: auto; /* 버튼을 항상 하단에 위치시킴 */
+    margin-bottom: 2rem;
+    z-index: 10;
+}
+.nextButtonStyled:hover {
+    transform: scale(1.05);
+    background-color: #fff2a8;
+}
+
+
+/* --- 3. [전용 스타일] Page 1 전용 스타일 (.page1 역할) --- */
+.page1 {
+    justify-content: space-between; 
+}
+
+.hanjaTitle {
+    /* [핵심 복구] 큰 한자 제목의 스타일을 명확히 정의 */
+    font-size: 6rem;
+    font-weight: 600;
+    margin-top: 4rem;
+    margin-bottom: 0;
+    color: #ffffff; 
+    line-height: 1.2;
+}
+.descriptionText {
+    /* [핵심 복구] 설명 텍스트 스타일 정의 */
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 2rem 0;
+    color: #ffffff;
+}

@@ -1,0 +1,85 @@
+/* src/components/pages/Page12_QuizIntro/Page12.module.css (최종 코드) */
+
+/* --- 1. [공용 복사] 페이지 컨테이너 기본 스타일 (.page-container 역할) --- */
+.pageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #2a2a2a; 
+    color: #ffffff;
+    border-radius: 0 0 12px 12px; 
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    min-height: 700px;
+    padding: 1.5rem; 
+    box-sizing: border-box;
+    justify-content: space-between; 
+    position: relative; 
+    overflow: hidden;
+}
+@media (min-width: 500px) {
+    .pageContainer {
+        padding: 2.5rem;
+    }
+}
+
+
+/* --- 2. [전용 스타일] Page 12 레이아웃 --- */
+.page12Container {
+    justify-content: space-between; /* 제목은 위, 버튼은 아래 */
+    align-items: center;
+    text-align: center;
+}
+
+/* 퀴즈 제목 그룹 */
+.quizIntroContent {
+    margin-top: 10rem;
+}
+.quizIntroTitle {
+    font-size: 4rem;
+    font-weight: 700;
+    color: #f7e04f; /* 포인트 컬러 */
+    margin: 0;
+}
+.quizIntroSubtitle {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin: 1rem 0 0 0;
+}
+
+/* --- 3. [복사] 상단/하단 네비게이션 버튼 스타일 (.nav-button-container 역할) --- */
+
+.navButtonContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: auto; /* 버튼을 하단에 배치 */
+    margin-bottom: 2rem; /* 하단 여백 */
+}
+/* 상단에 위치하는 경우를 위한 스타일 */
+.navButtonContainer.top { 
+    margin-top: 0;
+    margin-bottom: auto; 
+    padding: 0; 
+}
+.navButton {
+    background-color: #3a3a3a; 
+    color: #f0f0f0;
+    border: 1px solid #555;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 100px;
+}
+.prevButton {
+    margin-right: auto;
+}
+.nextButton {
+    margin-left: auto;
+}
+.navButton:hover {
+    background-color: #4a4a4a;
+}
