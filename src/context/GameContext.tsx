@@ -43,7 +43,7 @@ export const GameProvider = ({ children }: GameProviderProps) => { // [수정] G
   const [player1, setPlayer1] = useState<Player>({ id: '', name: '' });
   const [player2, setPlayer2] = useState<Player>({ id: '', name: '' });
   const [score, setScore] = useState(0);
-  const [currentPage, setCurrentPage] = useState(0); // 0 = 로그인
+  const [currentPage, setCurrentPage] = useState(16); // 0 = 로그인
   const [gameDocId, setGameDocId] = useState<string | null>(null);
   const [viewedHints, setViewedHints] = useState<Set<number>>(new Set());
   const [structureQuizSolved, setStructureQuizSolved] = useState([false, false, false, false, false, false]);

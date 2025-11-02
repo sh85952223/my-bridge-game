@@ -1,0 +1,271 @@
+/* src/components/pages/Page18_DisadvantageQuiz/Page18.module.css (최종 수정) */
+
+:root {
+    --color-primary-bg: #1e1e1e;
+    --color-secondary-bg: #2a2a2a;
+    --color-text-light: #ffffff;
+    --color-text-dark: #1a1a1a;
+    --color-quiz-accent: #f7e04f; /* 노란색 강조 */
+    --color-correct: #7B1FA2; /* 보라색 보색 */
+    --color-wrong: #ff4d4d;
+    --color-border-light: #555;
+    --color-border-dark: #3a3a3a;
+}
+
+.pageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--color-primary-bg); 
+    color: var(--color-text-light);
+    border-radius: 0 0 12px 12px; 
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    min-height: 700px; /* 고정 높이 대신 최소 높이 사용 */
+    padding: 0; 
+    box-sizing: border-box;
+    justify-content: flex-start; 
+    position: relative; 
+    overflow: hidden; /* 모달이 이 밖으로 나가야 하므로 여기서 overflow:hidden을 제거해야 합니다. */
+    /* [수정] overflow: hidden 제거 - 모달이 이 영역 밖으로 나와야 함 */
+}
+
+/* 퀴즈 페이지의 메인 콘텐츠만 스크롤되도록 */
+.quizPage {
+    justify-content: center; 
+}
+
+/* 컨트롤 영역 (퀴즈 본문) */
+.controlsWrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 450px; 
+    padding: 2rem;
+    box-sizing: border-box;
+    gap: 1.5rem;
+    flex-grow: 1; 
+    background-color: var(--color-secondary-bg); 
+    border-top: 2px solid var(--color-border-dark);
+    border-radius: 20px 20px 0 0; 
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
+    z-index: 10; /* [추가] 일반 콘텐츠는 z-index를 낮게 설정 */
+}
+
+.quizTitle {
+    font-size: 1.6rem; 
+    font-weight: 700; 
+    color: var(--color-text-light); 
+    text-align: center;
+    margin: 0;
+    line-height: 1.4;
+}
+.quizClue {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--color-quiz-accent); 
+    background-color: #1e1e1e;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    border: 1px dashed var(--color-border-light);
+}
+
+.optionsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); 
+    gap: 12px;
+    width: 100%;
+}
+.optionButton {
+    background-color: #3a3a3a;
+    color: var(--color-text-light);
+    border: 2px solid var(--color-border-light);
+    border-radius: 10px;
+    padding: 1rem 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+.optionButton:hover:not(:disabled) {
+    background-color: #4a4a4a;
+    border-color: var(--color-quiz-accent); 
+    transform: translateY(-2px);
+}
+.selected {
+    border-color: var(--color-quiz-accent); 
+    box-shadow: 0 0 10px rgba(247, 224, 79, 0.6);
+}
+.correct {
+    background-color: var(--color-correct); 
+    border-color: var(--color-correct);
+    color: var(--color-text-light); 
+    pointer-events: none;
+    animation: pulseCorrect 0.8s ease-out 3;
+}
+.incorrect {
+    background-color: var(--color-wrong); 
+    border-color: #ff8a80;
+    color: var(--color-text-light);
+    pointer-events: none;
+    opacity: 0.7;
+}
+@keyframes pulseCorrect {
+    0% { transform: scale(1); box-shadow: 0 0 10px rgba(123, 31, 162, 0.5); }
+    50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(123, 31, 162, 1); }
+    100% { transform: scale(1); box-shadow: 0 0 10px rgba(123, 31, 162, 0.5); }
+}
+
+/* 피드백 영역 */
+.feedbackArea {
+    width: 100%;
+    text-align: center;
+    /* [수정] 오답일 때만 최소 높이 적용, 정답일 때는 내용에 따라 유연하게 */
+    min-height: 40px; 
+    display: flex; /* [추가] 이미지와 텍스트를 중앙 정렬하기 위함 */
+    flex-direction: column; /* [추가] 수직 정렬 */
+    align-items: center; /* [추가] 가운데 정렬 */
+    justify-content: center; /* [추가] 세로 가운데 정렬 */
+    gap: 0.5rem; /* [추가] 이미지와 텍스트 사이 간격 */
+}
+.feedbackCorrect {
+    color: var(--color-quiz-accent); 
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+.feedbackWrong {
+    color: var(--color-wrong);
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+/* 해설 이미지 스타일 */
+.explanationImage {
+    width: 100%;
+    max-width: 300px; 
+    height: auto;
+    border-radius: 8px;
+    margin-top: 0.5rem; /* [수정] feedbackArea의 gap으로 대체 가능 */
+    border: 2px solid var(--color-border-light);
+    display: block; /* [추가] 블록 요소로 만들어 정확한 크기 적용 */
+    object-fit: contain; /* [추가] 이미지 비율 유지 */
+}
+/* 해설 텍스트 스타일 */
+.explanationText {
+    margin-top: 0.5rem; /* [수정] feedbackArea의 gap으로 대체 가능 */
+    line-height: 1.4;
+    font-size: 1.1rem; 
+    color: var(--color-text-light); /* [추가] 텍스트 색상 명시 */
+}
+
+.hintButton {
+    background-color: transparent;
+    color: var(--color-quiz-accent);
+    border: 2px solid var(--color-border-dark);
+    border-radius: 10px;
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+    z-index: 10; /* [추가] 힌트 버튼도 z-index를 줘서 다른 요소에 묻히지 않게 */
+}
+.hintButton:hover {
+    background-color: var(--color-border-dark);
+}
+
+.nextButtonStyled {
+    background-color: var(--color-quiz-accent);
+    color: var(--color-text-dark);
+    border: none;
+    border-radius: 25px;
+    padding: 12px 30px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+    width: 100%; 
+    margin-top: 1rem; 
+    z-index: 10;
+}
+.nextButtonStyled:hover {
+    transform: scale(1.05);
+    background-color: #fff2a8;
+}
+
+/* --- 모달 스타일 --- */
+.modalOverlay {
+    position: fixed; /* [핵심] 화면 전체에 고정 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000; /* [핵심 수정] 모든 요소 위에 뜨도록 매우 높은 z-index */
+    backdrop-filter: blur(5px);
+}
+.modalContent {
+    background-color: var(--color-secondary-bg);
+    color: var(--color-text-light);
+    padding: 1.5rem;
+    border-radius: 12px;
+    text-align: center;
+    width: 90%;
+    max-width: 400px; 
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--color-border-light);
+    z-index: 10001; /* [추가] 모달 콘텐츠도 오버레이 위에 떠야 함 */
+}
+.modalTitle {
+    color: var(--color-quiz-accent);
+    margin-top: 0;
+    font-size: 1.5rem;
+}
+.modalText {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+.modalImage {
+    width: 100%;
+    height: auto;
+    max-height: 300px; /* 힌트 이미지도 최대 높이 제한 */
+    object-fit: contain; /* 이미지 비율 유지 */
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--color-border-light);
+}
+.modalButtonContainer {
+    display: flex;
+    gap: 1rem;
+}
+.modalButton {
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex: 1;
+}
+.modalButtonPrimary {
+    background-color: var(--color-wrong); 
+    color: var(--color-text-light);
+}
+.modalButtonSecondary {
+    background-color: var(--color-border-light);
+    color: var(--color-text-light);
+}
+.modalButtonFull {
+    width: 100%;
+    background-color: var(--color-quiz-accent);
+    color: var(--color-text-dark);
+}

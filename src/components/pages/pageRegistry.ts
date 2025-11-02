@@ -19,4 +19,10 @@ export const pageRegistry = {
   14: lazy(() => import('./Page14_HintHub/')),         
   15: lazy(() => import('./Page15_MatchQuiz/')),        
   16: lazy(() => import('./Page16_StudyGuide/')),
+  17: lazy(() => import('./Page17_BridgeTypeQuiz/')),
+  18: lazy(() => import('./Page18_DisadvantageQuiz/')),
+  19: lazy(() => import('./Page19_ForceQuiz/')),
+  20: lazy(() => import('./Page20_WindQuiz/')),
+  21: lazy(() => import('./Page21_LengthQuiz/')),
+  22: lazy(() => import('./Page22_TrussQuiz/')),
 };

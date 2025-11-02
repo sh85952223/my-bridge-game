@@ -1,0 +1,259 @@
+/* src/components/pages/Page20_WindQuiz/Page20.module.css (최종 코드) */
+
+/* [유지] CSS 변수 정의 */
+:root {
+    --color-primary-bg: #1e1e1e;
+    --color-secondary-bg: #2a2a2a;
+    --color-text-light: #ffffff;
+    --color-text-dark: #1a1a1a;
+    --color-quiz-accent: #f7e04f; 
+    --color-correct: #7B1FA2; 
+    --color-wrong: #ff4d4d;
+    --color-border-light: #555;
+    --color-border-dark: #3a3a3a;
+}
+
+/* --- 1. [공용 복사] 페이지 컨테이너 기본 스타일 --- */
+.pageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--color-primary-bg); 
+    color: var(--color-text-light);
+    border-radius: 0 0 12px 12px; 
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    min-height: 700px;
+    padding: 1.5rem; /* VS 퀴즈는 패딩이 있는 것이 보기 좋습니다 */
+    box-sizing: border-box;
+    justify-content: space-between; /* 상단 제목, 하단 버튼 */
+    position: relative; 
+    overflow: hidden;
+}
+@media (min-width: 500px) {
+    .pageContainer {
+        padding: 2.5rem;
+    }
+}
+
+/* --- 2. [공용 복사] '다음' 버튼 스타일 --- */
+.nextButtonStyled {
+    background-color: var(--color-quiz-accent);
+    color: var(--color-text-dark);
+    border: none;
+    border-radius: 25px;
+    padding: 12px 30px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+    width: 100%; 
+    max-width: 300px; /* 버튼 최대 너비 */
+    margin-top: 1rem; 
+    z-index: 10;
+}
+.nextButtonStyled:hover {
+    transform: scale(1.05);
+    background-color: #fff2a8;
+}
+
+/* --- 3. [전용 스타일] Page 20 (VS 퀴즈) --- */
+.quizPage {
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+.quizTitle {
+    font-size: 1.8rem; 
+    font-weight: 700; 
+    color: var(--color-quiz-accent); 
+    text-align: center;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* VS 퀴즈 컨테이너 (Page 9 스타일 복사) */
+.vsQuizContainer {
+    display: flex;
+    justify-content: space-between; 
+    align-items: flex-start; 
+    width: 100%;
+}
+.vsOption {
+    width: 42%; 
+    border: 3px solid var(--color-border-light); 
+    border-radius: 8px;
+    padding: 0.5rem;
+    box-sizing: border-box;
+    background-color: var(--color-border-dark);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+.vsImage {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 5px;
+}
+.vsLabel {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+}
+.vsGraphic {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-quiz-accent); 
+    padding-top: 3rem; 
+}
+.vsOption:hover:not(:disabled) {
+    background-color: #4a4a4a;
+    border-color: var(--color-quiz-accent); 
+    transform: translateY(-2px);
+}
+
+/* --- 상태별 색상 (보라색 유지) --- */
+.selected {
+    border-color: var(--color-quiz-accent); 
+    box-shadow: 0 0 10px rgba(247, 224, 79, 0.6);
+}
+.correct {
+    background-color: var(--color-correct); 
+    border-color: var(--color-correct);
+    color: var(--color-text-light); 
+    pointer-events: none;
+    animation: pulseCorrect 0.8s ease-out 3;
+}
+.incorrect {
+    background-color: var(--color-wrong); 
+    border-color: #ff8a80;
+    color: var(--color-text-light);
+    pointer-events: none;
+    opacity: 0.7;
+}
+@keyframes pulseCorrect {
+    0% { transform: scale(1); box-shadow: 0 0 10px rgba(123, 31, 162, 0.5); }
+    50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(123, 31, 162, 1); }
+    100% { transform: scale(1); box-shadow: 0 0 10px rgba(123, 31, 162, 0.5); }
+}
+
+/* 피드백 영역 */
+.feedbackArea {
+    min-height: 40px;
+    width: 100%;
+    text-align: center;
+}
+.feedbackCorrect {
+    color: var(--color-quiz-accent); 
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+.feedbackWrong {
+    color: var(--color-wrong);
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+/* 힌트 버튼 (Page 18/19와 동일) */
+.hintButton {
+    background-color: transparent;
+    color: var(--color-quiz-accent);
+    border: 2px solid var(--color-border-dark);
+    border-radius: 10px;
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+    max-width: 300px;
+    z-index: 10;
+}
+.hintButton:hover {
+    background-color: var(--color-border-dark);
+}
+
+/* --- 4. [복사] 모달 스타일 (Page 18/19와 동일) --- */
+.modalOverlay {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000; 
+    backdrop-filter: blur(5px);
+}
+.modalContent {
+    background-color: var(--color-secondary-bg);
+    color: var(--color-text-light);
+    padding: 1.5rem;
+    border-radius: 12px;
+    text-align: center;
+    width: 90%;
+    max-width: 400px; 
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--color-border-light);
+    z-index: 10001; 
+}
+.modalTitle {
+    color: var(--color-quiz-accent);
+    margin-top: 0;
+    font-size: 1.5rem;
+}
+.modalText {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+.modalImage {
+    width: 100%;
+    height: auto;
+    max-height: 300px; 
+    object-fit: contain; 
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--color-border-light);
+}
+.modalButtonContainer {
+    display: flex;
+    gap: 1rem;
+}
+.modalButton {
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex: 1;
+}
+.modalButtonPrimary {
+    background-color: var(--color-wrong); 
+    color: var(--color-text-light);
+}
+.modalButtonSecondary {
+    background-color: var(--color-border-light);
+    color: var(--color-text-light);
+}
+.modalButtonFull {
+    width: 100%;
+    background-color: var(--color-quiz-accent);
+    color: var(--color-text-dark);
+}
+
+.attribution {
+    font-size: 0.75rem;
+    color: #aaa;
+    text-align: center;
+    padding-top: 1rem; /* 위쪽 여백 */
+    margin-top: auto; /* 페이지 하단으로 밀어냄 */
+    width: 100%;
+    line-height: 1.4; /* 줄바꿈을 위해 추가 */
+}
