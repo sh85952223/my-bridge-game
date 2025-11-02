@@ -2,13 +2,22 @@ import { Suspense } from 'react';
 import { useGame } from '../context/useGame'; 
 import { pageRegistry } from './pages/pageRegistry'; 
 import LoginScreen from "./LoginScreen"; 
+// [신규] 타임 오버 페이지 import
+import PageTimeUp from './pages/Page_TimeUp'; 
 
-// [수정] 인라인 스타일 속성에 as const를 추가하여 TS2322 오류 해결
+// [신규] 초를 mm:ss 형식으로 변환하는 헬퍼 함수
+const formatTime = (totalSeconds: number) => {
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+};
+
+// [수정] TypeScript 타입 오류(TS2322)를 해결하기 위해 'as const' 추가
 
 // 게임 전체를 화면 중앙에 배치하고 배경색 설정
 const GAME_WRAPPER_STYLE = {
     display: 'flex' as const,
-    flexDirection: 'column' as const, // 👈 TS2322 해결
+    flexDirection: 'column' as const, // TS 오류 해결
     alignItems: 'center' as const,
     minHeight: '100vh',
     backgroundColor: '#111', 
@@ -36,29 +45,52 @@ const SCORE_BAR_STYLE = {
     borderRadius: '12px 12px 0 0',
     borderBottom: '2px solid #3a3a3a',
     width: '100%',
-    boxSizing: 'border-box' as const, // 👈 TS2322 해결
+    boxSizing: 'border-box' as const, // TS 오류 해결
     maxWidth: '500px', 
     margin: '0 auto',
 };
 const SCORE_LABEL_STYLE = { fontSize: '1rem', fontWeight: 600, color: '#aaa' };
 const SCORE_VALUE_STYLE = { fontSize: '1.5rem', fontWeight: 700, color: '#f7e04f' };
 
+// [신규] 타이머 텍스트 스타일
+const TIMER_STYLE = {
+  fontSize: '1.5rem',
+  fontWeight: 700,
+  color: '#f7e04f', // 점수와 동일한 강조색
+};
+
 
 const GameContainer = () => {
-  const { currentPage, score } = useGame();
+  // [수정] timeRemaining, isTimeUp 가져오기
+  const { currentPage, score, timeRemaining, isTimeUp } = useGame();
 
   const renderScoreBar = () => (
     <div style={SCORE_BAR_STYLE}>
-      <span style={SCORE_LABEL_STYLE}>SCORE</span>
-      <span style={SCORE_VALUE_STYLE}>{score}</span>
+      <div>
+        <span style={SCORE_LABEL_STYLE}>SCORE </span>
+        <span style={SCORE_VALUE_STYLE}>{score}</span>
+      </div>
+      {/* [신규] 타이머 표시 */}
+      <div style={TIMER_STYLE}>
+        {formatTime(timeRemaining)}
+      </div>
     </div>
   );
 
   const renderCurrentPage = () => {
+    // [수정] 1. 타임 오버 시 PageTimeUp 렌더링
+    if (isTimeUp) {
+      // PageTimeUp 컴포넌트를 렌더링하기 위해 pageRegistry에 등록하거나
+      // 여기서 직접 import 해야 합니다. (상단에 import PageTimeUp 추가됨)
+      return <PageTimeUp />;
+    }
+
+    // 2. 로그인 페이지 (기존과 동일)
     if (currentPage === 0) { 
         return <LoginScreen />; 
     }
     
+    // 3. 퀴즈 페이지 (기존과 동일)
     const CurrentPage = pageRegistry[currentPage as keyof typeof pageRegistry];
 
     if (!CurrentPage) {
@@ -94,3 +126,4 @@ const GameContainer = () => {
 };
 
 export default GameContainer;
+

@@ -25,4 +25,5 @@ export const pageRegistry = {
   20: lazy(() => import('./Page20_WindQuiz/')),
   21: lazy(() => import('./Page21_LengthQuiz/')),
   22: lazy(() => import('./Page22_TrussQuiz/')),
+  23: lazy(() => import('./Page23_FinalResult/')),
 };

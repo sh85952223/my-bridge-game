@@ -1,34 +1,47 @@
-import { createContext, useState, type ReactNode, type SetStateAction, type Dispatch } from 'react';
-import { db } from '../firebaseConfig';
+import { createContext, useState, useEffect, type ReactNode, type SetStateAction, type Dispatch } from 'react';
+import { db } from '../firebaseConfig'; // [확인] firebaseConfig 경로가 맞는지 확인
 import { doc, setDoc, serverTimestamp, updateDoc } from 'firebase/firestore';
 
+// 40분 (초)
+const TOTAL_GAME_TIME_SECONDS = 40 * 60; 
+
 // --- Type 정의 ---
-interface Player {
-  id: string;
-  name: string;
-}
-
-// [수정] 누락되었던 GameProviderProps 인터페이스 추가
-interface GameProviderProps {
-  children: ReactNode;
-}
-
-// [수정] 'export' 추가 (useGame.ts에서 써야 함)
-export interface GameContextType { 
+export interface GameContextType {
   player1: Player;
   player2: Player;
   score: number;
   currentPage: number;
   gameDocId: string | null;
   viewedHints: Set<number>;
-  structureQuizSolved: boolean[]; // Page 13 퀴즈 상태
-  matchQuizSolved: Set<string>;   // Page 15 퀴즈 상태
+  structureQuizSolved: boolean[]; 
+  matchQuizSolved: Set<string>; 
+  
+  // [신규] 타이머 및 게임 종료 상태
+  timeRemaining: number; 
+  isTimeUp: boolean;     
+  timeTaken: number;     
+  startTime: Date | null; 
+
   startGame: (p1Id: string, p1Name: string, p2Id: string, p2Name: string) => Promise<void>;
   updateScore: (points: number) => void;
   setCurrentPage: Dispatch<SetStateAction<number>>;
   viewHint: (hintId: number) => void;
   setStructureQuizSolved: Dispatch<SetStateAction<boolean[]>>; 
-  setMatchQuizSolved: Dispatch<SetStateAction<Set<string>>>;
+  setMatchQuizSolved: Dispatch<SetStateAction<Set<string>>>; 
+
+  // [신규] 최종 점수 계산 함수 추가
+  calculateFinalScore: (quizScore: number, timeTaken: number) => { 
+    quizScore: number, 
+    timeBonus: number, 
+    finalScore: number 
+  };
+}
+interface Player {
+  id: string;
+  name: string;
+}
+interface GameProviderProps {
+  children: ReactNode;
 }
 // ---------------
 
@@ -36,18 +49,63 @@ export interface GameContextType {
 // eslint-disable-next-line react-refresh/only-export-components
 export const GameContext = createContext<GameContextType | undefined>(undefined);
 
-// 2. custom hook (useGame) -> useGame.ts로 이동됨
-
 // 3. Context Provider 컴포넌트
-export const GameProvider = ({ children }: GameProviderProps) => { // [수정] GameProviderProps 타입 적용
+export const GameProvider = ({ children }: GameProviderProps) => {
   const [player1, setPlayer1] = useState<Player>({ id: '', name: '' });
   const [player2, setPlayer2] = useState<Player>({ id: '', name: '' });
   const [score, setScore] = useState(0);
-  const [currentPage, setCurrentPage] = useState(16); // 0 = 로그인
+  const [currentPage, setCurrentPage] = useState(0); // 0 = 로그인
   const [gameDocId, setGameDocId] = useState<string | null>(null);
   const [viewedHints, setViewedHints] = useState<Set<number>>(new Set());
-  const [structureQuizSolved, setStructureQuizSolved] = useState([false, false, false, false, false, false]);
-  const [matchQuizSolved, setMatchQuizSolved] = useState<Set<string>>(new Set());
+  const [structureQuizSolved, setStructureQuizSolved] = useState(new Array(6).fill(false)); // (0번 인덱스 포함 6개)
+  const [matchQuizSolved, setMatchQuizSolved] = useState<Set<string>>(new Set()); 
+
+  // [신규] 타이머 상태
+  const [startTime, setStartTime] = useState<Date | null>(null);
+  const [timeRemaining, setTimeRemaining] = useState(TOTAL_GAME_TIME_SECONDS);
+  const [timeTaken, setTimeTaken] = useState(0);
+  const [isTimeUp, setIsTimeUp] = useState(false);
+
+
+  // [신규] 타이머 로직
+  useEffect(() => {
+    if (startTime && currentPage > 0 && !isTimeUp) {
+      const timerInterval = setInterval(() => {
+        const now = new Date();
+        const elapsedSeconds = Math.floor((now.getTime() - startTime.getTime()) / 1000);
+        const remaining = TOTAL_GAME_TIME_SECONDS - elapsedSeconds;
+
+        setTimeTaken(elapsedSeconds);
+        setTimeRemaining(remaining);
+
+        if (remaining <= 0) {
+          clearInterval(timerInterval);
+          setIsTimeUp(true); // 타임 오버!
+          setTimeRemaining(0);
+        }
+      }, 1000);
+
+      return () => clearInterval(timerInterval);
+    }
+  }, [startTime, currentPage, isTimeUp]);
+
+  
+  // [신규] 최종 점수 계산 로직 (컨텍스트 내부로 이동)
+  const calculateFinalScore = (quizScore: number, timeTaken: number) => {
+    const totalTime = TOTAL_GAME_TIME_SECONDS; // 2400
+
+    // [핵심 수정] 가중치를 0.1에서 0.05로 대폭 하향 조정
+    const timeBonus = Math.max(0, (totalTime - timeTaken) * 0.05);
+
+    const finalScore = quizScore + timeBonus;
+    
+    return {
+      quizScore,
+      timeBonus: Math.round(timeBonus),
+      finalScore: Math.round(finalScore)
+    };
+  };
+
 
   const startGame = async (p1Id: string, p1Name: string, p2Id: string, p2Name: string) => {
     try {
@@ -67,15 +125,21 @@ export const GameProvider = ({ children }: GameProviderProps) => { // [수정] G
       setGameDocId(p1Id); 
       setCurrentPage(1); 
       setViewedHints(new Set()); 
-      setStructureQuizSolved([false, false, false, false, false, false]); 
+      setStructureQuizSolved(new Array(6).fill(false)); 
       setMatchQuizSolved(new Set()); 
+
+      // [신규] 타이머 시작
+      setStartTime(new Date());
+      setTimeRemaining(TOTAL_GAME_TIME_SECONDS);
+      setTimeTaken(0);
+      setIsTimeUp(false);
 
       console.log("게임 시작! Firebase 문서 ID:", p1Id);
 
-    } catch (e) {
-      console.error("Firebase 문서 생성 오류: ", e);
+    } catch (_e) { 
+      console.error("Firebase 문서 생성 오류: ", _e);
       alert("게임 시작에 실패했습니다. 관리자에게 문의하세요.");
-      throw e; 
+      throw _e; 
     }
   };
 
@@ -114,14 +178,25 @@ export const GameProvider = ({ children }: GameProviderProps) => { // [수정] G
     gameDocId,
     viewedHints,
     structureQuizSolved, 
-    matchQuizSolved,
+    matchQuizSolved, 
+    
+    // [신규] 타이머 값 전달
+    timeRemaining,
+    isTimeUp,
+    timeTaken,
+    startTime,
+
     startGame,
     updateScore,
     setCurrentPage,
     viewHint,
     setStructureQuizSolved, 
     setMatchQuizSolved,
+    
+    // [신규] 점수 계산 함수 전달
+    calculateFinalScore,
   };
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
 };
+
